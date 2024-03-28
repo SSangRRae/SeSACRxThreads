@@ -53,7 +53,7 @@ class PasswordViewController: UIViewController {
             .map { $0.count >= 8 }
         
         validation
-            .bind(to: nextButton.rx.isHidden, descriptionLabel.rx.isHidden)
+            .bind(to: nextButton.rx.isEnabled, descriptionLabel.rx.isHidden)
             .disposed(by: disposeBag)
         
         validation
