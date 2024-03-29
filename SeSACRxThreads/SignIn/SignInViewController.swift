@@ -30,6 +30,7 @@ class SignInViewController: UIViewController {
     let passwordValidationText = Observable.just("비밀번호는 10글자 이상입니다.")
     let validationColor = Observable.just(UIColor.red)
     
+    
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
