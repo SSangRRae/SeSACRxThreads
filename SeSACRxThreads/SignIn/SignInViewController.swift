@@ -70,7 +70,7 @@ class SignInViewController: UIViewController {
         .bind(to: signInButton.rx.isEnabled)
         .disposed(by: disposeBag)
         
-        signInButton.rx.tap.bind(with: self) { owner, _ in
+        signUpButton.rx.tap.bind(with: self) { owner, _ in
             owner.navigationController?.pushViewController(SignUpViewController(), animated: true)
         }.disposed(by: disposeBag)
     }
