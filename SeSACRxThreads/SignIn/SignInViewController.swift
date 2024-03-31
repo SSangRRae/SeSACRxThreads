@@ -20,23 +20,17 @@ class SignInViewController: UIViewController {
     private let user = User()
 
     let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
-    let emailDescriptionLable = UILabel()
     let passwordTextField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
-    let passwordDescriptionLabel = UILabel()
+    let descriptionLabel = UILabel()
     let signInButton = PointButton(title: "로그인")
     let signUpButton = UIButton()
     
-    let emailValidationText = Observable.just("이메일 형식이 잘못되었습니다. (@, . 미포함)")
-    let passwordValidationText = Observable.just("비밀번호는 10글자 이상입니다.")
-    let validationColor = Observable.just(UIColor.red)
-    
+    let validationText = PublishSubject<String>()
     
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = Color.white
         
         configureLayout()
         configure()
@@ -44,30 +38,17 @@ class SignInViewController: UIViewController {
     }
     
     func bind() {
-        // 이메일, 비밀번호 유효성 검사 text bind
-        emailValidationText.bind(to: emailDescriptionLable.rx.text).disposed(by: disposeBag)
-        passwordValidationText.bind(to: passwordDescriptionLabel.rx.text).disposed(by: disposeBag)
+        validationText.bind(to: descriptionLabel.rx.text).disposed(by: disposeBag)
         
-        // 빨간색
-        validationColor.bind(to: emailDescriptionLable.rx.textColor, passwordDescriptionLabel.rx.textColor)
-            .disposed(by: disposeBag)
-        
-        // 이메일에 '@', '.' 이 포함되어 있지 않으면 형식이 잘못되었다고 판단...
-        let emailTextCount = emailTextField.rx.text.orEmpty.map { $0.contains("@") && $0.contains(".") }
-        emailTextCount.bind(to: emailDescriptionLable.rx.isHidden).disposed(by: disposeBag)
-        
-        // 비밀번호는 10글자 이상
-        let passwordTextCount = passwordTextField.rx.text.orEmpty.map { $0.count >= 10 }
-        passwordTextCount.bind(to: passwordDescriptionLabel.rx.isHidden).disposed(by: disposeBag)
-        
-        // 이메일과 패스워드가 맞아야 로그인 버튼을 누를 수 있게..
-        let emailSame = emailTextField.rx.text.orEmpty.map { $0 == self.user.email }
-        let passwordSame = passwordTextField.rx.text.orEmpty.map { $0 == self.user.password }
-        
-        Observable.combineLatest(emailSame, passwordSame) { a, b in
-            return a && b
+        signInButton.rx.tap.bind(with: self) { owner, _ in
+            if owner.emailTextField.text == owner.user.email && owner.passwordTextField.text == owner.user.password {
+                Observable.just(UIColor.blue).bind(to: owner.descriptionLabel.rx.textColor).disposed(by: owner.disposeBag)
+                owner.validationText.onNext("환영합니다. \(owner.user.email)님")
+            } else {
+                Observable.just(UIColor.red).bind(to: owner.descriptionLabel.rx.textColor).disposed(by: owner.disposeBag)
+                owner.validationText.onNext("일치하는 사용자가 없습니다.")
+            }
         }
-        .bind(to: signInButton.rx.isEnabled)
         .disposed(by: disposeBag)
         
         signUpButton.rx.tap.bind(with: self) { owner, _ in
@@ -76,18 +57,21 @@ class SignInViewController: UIViewController {
     }
     
     func configure() {
+        view.backgroundColor = Color.white
+        
         signUpButton.setTitle("회원이 아니십니까?", for: .normal)
         signUpButton.setTitleColor(Color.black, for: .normal)
         
         emailTextField.autocapitalizationType = .none
         passwordTextField.autocapitalizationType = .none
+        
+        descriptionLabel.textAlignment = .center
     }
     
     func configureLayout() {
         view.addSubview(emailTextField)
-        view.addSubview(emailDescriptionLable)
         view.addSubview(passwordTextField)
-        view.addSubview(passwordDescriptionLabel)
+        view.addSubview(descriptionLabel)
         view.addSubview(signInButton)
         view.addSubview(signUpButton)
         
@@ -97,19 +81,13 @@ class SignInViewController: UIViewController {
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
-        emailDescriptionLable.snp.makeConstraints { make in
-            make.height.equalTo(22)
-            make.top.equalTo(emailTextField.snp.bottom).offset(8)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
-        }
-        
         passwordTextField.snp.makeConstraints { make in
             make.height.equalTo(50)
-            make.top.equalTo(emailDescriptionLable.snp.bottom).offset(30)
+            make.top.equalTo(emailTextField.snp.bottom).offset(30)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
-        passwordDescriptionLabel.snp.makeConstraints { make in
+        descriptionLabel.snp.makeConstraints { make in
             make.height.equalTo(22)
             make.top.equalTo(passwordTextField.snp.bottom).offset(8)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
@@ -117,7 +95,7 @@ class SignInViewController: UIViewController {
         
         signInButton.snp.makeConstraints { make in
             make.height.equalTo(50)
-            make.top.equalTo(passwordDescriptionLabel.snp.bottom).offset(30)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(30)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
