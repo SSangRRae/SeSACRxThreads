@@ -29,6 +29,8 @@
 		041280732AEFAD4B00972552 /* NicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041280722AEFAD4B00972552 /* NicknameViewController.swift */; };
 		041280782AF1D14000972552 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041280772AF1D14000972552 /* Resource.swift */; };
 		EC6F8AED2BB865E100B173CF /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8AEC2BB865E100B173CF /* SampleViewController.swift */; };
+		EC6F8AF62BBA9B6700B173CF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8AF52BBA9B6700B173CF /* SearchViewController.swift */; };
+		EC6F8AF82BBAA27900B173CF /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8AF72BBAA27900B173CF /* SearchTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		041280722AEFAD4B00972552 /* NicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewController.swift; sourceTree = "<group>"; };
 		041280772AF1D14000972552 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		EC6F8AEC2BB865E100B173CF /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
+		EC6F8AF52BBA9B6700B173CF /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		EC6F8AF72BBAA27900B173CF /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,7 @@
 		041280222AEF9BAB00972552 /* SeSACRxThreads */ = {
 			isa = PBXGroup;
 			children = (
+				EC6F8AF42BBA9B5800B173CF /* Search */,
 				EC6F8AEB2BB865CD00B173CF /* Sample */,
 				041280532AEF9C1F00972552 /* SignUp */,
 				041280542AEF9C2600972552 /* SignIn */,
@@ -201,6 +206,15 @@
 				EC6F8AEC2BB865E100B173CF /* SampleViewController.swift */,
 			);
 			path = Sample;
+			sourceTree = "<group>";
+		};
+		EC6F8AF42BBA9B5800B173CF /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				EC6F8AF52BBA9B6700B173CF /* SearchViewController.swift */,
+				EC6F8AF72BBAA27900B173CF /* SearchTableViewCell.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -342,6 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC6F8AF62BBA9B6700B173CF /* SearchViewController.swift in Sources */,
 				041280782AF1D14000972552 /* Resource.swift in Sources */,
 				0412806F2AEFAD2D00972552 /* BirthdayViewController.swift in Sources */,
 				041280652AEFA2F000972552 /* SignTextField.swift in Sources */,
@@ -354,6 +369,7 @@
 				041280732AEFAD4B00972552 /* NicknameViewController.swift in Sources */,
 				0412806A2AEFA91E00972552 /* SignUpViewController.swift in Sources */,
 				041280712AEFAD3D00972552 /* PhoneViewController.swift in Sources */,
+				EC6F8AF82BBAA27900B173CF /* SearchTableViewCell.swift in Sources */,
 				041280262AEF9BAB00972552 /* SceneDelegate.swift in Sources */,
 				041280582AEFA05300972552 /* SignInViewModel.swift in Sources */,
 			);
