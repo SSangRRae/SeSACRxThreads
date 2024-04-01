@@ -10,18 +10,21 @@ import RxSwift
 import RxCocoa
 
 struct ShoppingItemList {
-    let complete: Bool
+    var complete: Bool = false
     let name: String
-    let favorite: Bool
+    var favorite: Bool = false
+    
+    init(name: String) {
+        self.name = name
+    }
 }
 
 final class ShoppingViewController: UIViewController {
     
     private let shoppingView = ShoppingView()
     
-    var data: [ShoppingItemList] = [ShoppingItemList(complete: false, name: "asdfasdf", favorite: false)]
-    
-    lazy var list = BehaviorSubject(value: data)
+    var data: [ShoppingItemList] = []
+    lazy var list = PublishSubject<[ShoppingItemList]>()
     
     let disposeBag = DisposeBag()
     
@@ -36,11 +39,62 @@ final class ShoppingViewController: UIViewController {
         
         configureNavigationBar()
         configureView()
-        
+        bind()
+    }
+}
+
+extension ShoppingViewController {
+    func bind() {
         list.bind(to: shoppingView.tableView.rx.items(cellIdentifier: "cell", cellType: ShoppingTableViewCell.self)) { row, element, cell in
-            cell.itemLabel.text = element.name
+            
+            cell.configureCell(element)
+            
+            cell.completeButton.rx.tap.bind(with: self) { owner, _ in
+                owner.data[row].complete.toggle()
+                owner.list.onNext(owner.data)
+            }.disposed(by: cell.disposeBag)
+            cell.favoriteButton.rx.tap.bind(with: self) { owner, _ in
+                owner.data[row].favorite.toggle()
+                owner.list.onNext(owner.data)
+            }.disposed(by: cell.disposeBag)
         }
         .disposed(by: disposeBag)
+        
+        shoppingView.addButton.rx.tap.bind(with: self) { owner, _ in
+            guard let text = owner.shoppingView.textField.text else { return }
+            
+            owner.data.append(ShoppingItemList(name: text))
+            owner.list.onNext(owner.data)
+        }
+        .disposed(by: disposeBag)
+        
+        Observable.zip(shoppingView.tableView.rx.itemSelected, shoppingView.tableView.rx.modelSelected(ShoppingItemList.self))
+            .bind(with: self) { owner, value in
+                owner.data.remove(at: value.0.row)
+                owner.list.onNext(owner.data)
+            }
+            .disposed(by: disposeBag)
+        
+        shoppingView.searchBar
+            .rx
+            .text
+            .orEmpty
+            .distinctUntilChanged()
+            .bind(with: self) { owner, text in
+            let result = text.isEmpty ? owner.data : owner.data.filter { $0.name.contains(text) }
+            owner.list.onNext(result)
+        }.disposed(by: disposeBag)
+        
+        shoppingView.searchBar
+            .rx
+            .searchButtonClicked
+            .withLatestFrom(shoppingView.searchBar.rx.text.orEmpty)
+            .distinctUntilChanged()
+            .bind(with: self) { owner, text in
+                let result = text.isEmpty ? owner.data : owner.data.filter { $0.name.contains(text) }
+                owner.list.onNext(result)
+            }
+            .disposed(by: disposeBag)
     }
 }
 

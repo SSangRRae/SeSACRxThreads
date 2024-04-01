@@ -6,12 +6,12 @@
 //
 
 import UIKit
+import RxSwift
 
 class ShoppingTableViewCell: UITableViewCell {
     
     let completeButton = {
         let view = UIButton()
-        view.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
         view.tintColor = .black
         return view
     }()
@@ -25,10 +25,11 @@ class ShoppingTableViewCell: UITableViewCell {
     
     let favoriteButton = {
         let view = UIButton()
-        view.setImage(UIImage(systemName: "star"), for: .normal)
         view.tintColor = .black
         return view
     }()
+    
+    var disposeBag = DisposeBag()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -41,6 +42,12 @@ class ShoppingTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
+    }
+    
     func configureHirerachy() {
         contentView.addSubview(completeButton)
         contentView.addSubview(itemLabel)
@@ -50,7 +57,7 @@ class ShoppingTableViewCell: UITableViewCell {
     func configureConstraints() {
         completeButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.size.equalTo(30)
+            make.size.equalTo(40)
             make.leading.equalTo(contentView.snp.leading).offset(16)
         }
         
@@ -62,8 +69,17 @@ class ShoppingTableViewCell: UITableViewCell {
         
         favoriteButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.size.equalTo(30)
+            make.size.equalTo(40)
             make.trailing.equalTo(contentView.snp.trailing).offset(-16)
         }
+    }
+    
+    func configureCell(_ item: ShoppingItemList) {
+        let complete: UIImage? = item.complete ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "checkmark.square")
+        let favorite: UIImage? = item.favorite ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        
+        completeButton.setImage(complete, for: .normal)
+        itemLabel.text = item.name
+        favoriteButton.setImage(favorite, for: .normal)
     }
 }

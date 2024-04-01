@@ -12,6 +12,7 @@ class ShoppingView: UIView {
     
     let searchBar = {
         let view = UISearchBar()
+        view.autocapitalizationType = .none
         return view
     }()
     
