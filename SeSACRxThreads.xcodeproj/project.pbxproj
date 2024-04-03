@@ -34,6 +34,7 @@
 		EC6F8B012BBABCF700B173CF /* ShoppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8AFE2BBABCF700B173CF /* ShoppingView.swift */; };
 		EC6F8B022BBABCF700B173CF /* ShoppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8AFF2BBABCF700B173CF /* ShoppingViewController.swift */; };
 		EC6F8B042BBABE6A00B173CF /* ShoppingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B032BBABE6A00B173CF /* ShoppingTableViewCell.swift */; };
+		EC6F8B0E2BBD70A300B173CF /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B0D2BBD70A300B173CF /* SignUpViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		EC6F8AFE2BBABCF700B173CF /* ShoppingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingView.swift; sourceTree = "<group>"; };
 		EC6F8AFF2BBABCF700B173CF /* ShoppingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingViewController.swift; sourceTree = "<group>"; };
 		EC6F8B032BBABE6A00B173CF /* ShoppingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingTableViewCell.swift; sourceTree = "<group>"; };
+		EC6F8B0D2BBD70A300B173CF /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				041280692AEFA91E00972552 /* SignUpViewController.swift */,
+				EC6F8B0D2BBD70A300B173CF /* SignUpViewModel.swift */,
 				0412806B2AEFABFE00972552 /* PasswordViewController.swift */,
 			);
 			path = SignUp;
@@ -375,6 +378,7 @@
 			files = (
 				EC6F8AF62BBA9B6700B173CF /* SearchViewController.swift in Sources */,
 				041280782AF1D14000972552 /* Resource.swift in Sources */,
+				EC6F8B0E2BBD70A300B173CF /* SignUpViewModel.swift in Sources */,
 				0412806F2AEFAD2D00972552 /* BirthdayViewController.swift in Sources */,
 				041280652AEFA2F000972552 /* SignTextField.swift in Sources */,
 				0412806C2AEFABFE00972552 /* PasswordViewController.swift in Sources */,

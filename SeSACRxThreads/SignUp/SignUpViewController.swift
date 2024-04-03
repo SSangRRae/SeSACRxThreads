@@ -11,16 +11,13 @@ import RxSwift
 import RxCocoa
 
 class SignUpViewController: UIViewController {
-    
-    private let emails = ["123@123.com", "qwer@qwer.com", "asdf@asdf.com"]
 
     let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
     let validationButton = UIButton()
     let descriptionLabel = UILabel()
     let nextButton = PointButton(title: "다음")
     
-    let validation = BehaviorSubject(value: false)
-    let validationText = PublishSubject<String>()
+    let viewModel = SignUpViewModel()
     
     let disposeBag = DisposeBag()
     
@@ -35,22 +32,11 @@ class SignUpViewController: UIViewController {
     }
     
     func bind() {
-        validation.bind(to: nextButton.rx.isEnabled).disposed(by: disposeBag)
-        validationText.bind(to: descriptionLabel.rx.text).disposed(by: disposeBag)
-        Observable.just(UIColor.lightGray).bind(to: nextButton.rx.backgroundColor).disposed(by: disposeBag)
+        viewModel.validation.bind(to: nextButton.rx.isEnabled).disposed(by: disposeBag)
+        viewModel.validationText.bind(to: descriptionLabel.rx.text).disposed(by: disposeBag)
         
         validationButton.rx.tap.bind(with: self) { owner, _ in
-            if owner.emails.contains(owner.emailTextField.text!) {
-                owner.validation.onNext(false)
-                owner.validationText.onNext("사용할 수 없는 이메일입니다.")
-                Observable.just(UIColor.red).bind(to: owner.descriptionLabel.rx.textColor).disposed(by: owner.disposeBag)
-                Observable.just(UIColor.lightGray).bind(to: owner.nextButton.rx.backgroundColor).disposed(by: owner.disposeBag)
-            } else {
-                owner.validation.onNext(true)
-                owner.validationText.onNext("사용 가능한 이메일입니다!")
-                Observable.just(UIColor.blue).bind(to: owner.descriptionLabel.rx.textColor).disposed(by: owner.disposeBag)
-                Observable.just(UIColor.black).bind(to: owner.nextButton.rx.backgroundColor).disposed(by: owner.disposeBag)
-            }
+            owner.viewModel.inputButtonTap.onNext(owner.emailTextField.text!)
         }
         .disposed(by: disposeBag)
         
