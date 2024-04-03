@@ -10,14 +10,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-struct User {
-    let email = "abc@abc.com"
-    let password = "qwerasdfzxcv"
-}
-
 class SignInViewController: UIViewController {
-    
-    private let user = User()
 
     let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
     let passwordTextField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
@@ -25,7 +18,7 @@ class SignInViewController: UIViewController {
     let signInButton = PointButton(title: "로그인")
     let signUpButton = UIButton()
     
-    let validationText = PublishSubject<String>()
+    let viewModel = SignInViewModel()
     
     let disposeBag = DisposeBag()
     
@@ -38,16 +31,10 @@ class SignInViewController: UIViewController {
     }
     
     func bind() {
-        validationText.bind(to: descriptionLabel.rx.text).disposed(by: disposeBag)
+        viewModel.validationText.bind(to: descriptionLabel.rx.text).disposed(by: disposeBag)
         
         signInButton.rx.tap.bind(with: self) { owner, _ in
-            if owner.emailTextField.text == owner.user.email && owner.passwordTextField.text == owner.user.password {
-                Observable.just(UIColor.blue).bind(to: owner.descriptionLabel.rx.textColor).disposed(by: owner.disposeBag)
-                owner.validationText.onNext("환영합니다. \(owner.user.email)님")
-            } else {
-                Observable.just(UIColor.red).bind(to: owner.descriptionLabel.rx.textColor).disposed(by: owner.disposeBag)
-                owner.validationText.onNext("일치하는 사용자가 없습니다.")
-            }
+            owner.viewModel.inputButtonTap.onNext((owner.emailTextField.text, owner.passwordTextField.text))
         }
         .disposed(by: disposeBag)
         
