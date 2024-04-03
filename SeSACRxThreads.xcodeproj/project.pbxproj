@@ -35,6 +35,7 @@
 		EC6F8B022BBABCF700B173CF /* ShoppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8AFF2BBABCF700B173CF /* ShoppingViewController.swift */; };
 		EC6F8B042BBABE6A00B173CF /* ShoppingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B032BBABE6A00B173CF /* ShoppingTableViewCell.swift */; };
 		EC6F8B0E2BBD70A300B173CF /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B0D2BBD70A300B173CF /* SignUpViewModel.swift */; };
+		EC6F8B102BBD78D200B173CF /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B0F2BBD78D200B173CF /* PasswordViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		EC6F8AFF2BBABCF700B173CF /* ShoppingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingViewController.swift; sourceTree = "<group>"; };
 		EC6F8B032BBABE6A00B173CF /* ShoppingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingTableViewCell.swift; sourceTree = "<group>"; };
 		EC6F8B0D2BBD70A300B173CF /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		EC6F8B0F2BBD78D200B173CF /* PasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +180,7 @@
 				041280692AEFA91E00972552 /* SignUpViewController.swift */,
 				EC6F8B0D2BBD70A300B173CF /* SignUpViewModel.swift */,
 				0412806B2AEFABFE00972552 /* PasswordViewController.swift */,
+				EC6F8B0F2BBD78D200B173CF /* PasswordViewModel.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC6F8AF62BBA9B6700B173CF /* SearchViewController.swift in Sources */,
+				EC6F8B102BBD78D200B173CF /* PasswordViewModel.swift in Sources */,
 				041280782AF1D14000972552 /* Resource.swift in Sources */,
 				EC6F8B0E2BBD70A300B173CF /* SignUpViewModel.swift in Sources */,
 				0412806F2AEFAD2D00972552 /* BirthdayViewController.swift in Sources */,

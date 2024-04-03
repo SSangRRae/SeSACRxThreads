@@ -16,7 +16,7 @@ class PasswordViewController: UIViewController {
     let nextButton = PointButton(title: "다음")
     let descriptionLabel = UILabel()
     
-    let validText = PublishSubject<String>()
+    let viewModel = PasswordViewModel()
     
     let disposeBag = DisposeBag()
     
@@ -30,33 +30,17 @@ class PasswordViewController: UIViewController {
     }
     
     func bind() {
-        validText.bind(to: descriptionLabel.rx.text).disposed(by: disposeBag)
+        viewModel.validText.bind(to: descriptionLabel.rx.text).disposed(by: disposeBag)
         
-        let validation = passwordTextField
+        passwordTextField
             .rx
             .text
             .orEmpty
-            .map { $0.count >= 8 }
+            .map { $0.count >= 8 }.bind(to: viewModel.inputPassword).disposed(by: disposeBag)
         
-        validation
+        viewModel.inputPassword
             .bind(to: nextButton.rx.isEnabled)
             .disposed(by: disposeBag)
-        
-        validation
-            .bind(with: self) { owner, value in
-                let color: UIColor = value ? .black : .lightGray
-                owner.nextButton.backgroundColor = color
-            }
-            .disposed(by: disposeBag)
-        
-        validation.bind(with: self) { owner, state in
-            let text: String = state ? "사용 가능한 비밀번호입니다" : "8자 이상 입력해주세요"
-            owner.validText.onNext(text)
-            
-            let color: UIColor = state ? .blue : .red
-            owner.descriptionLabel.textColor = color
-        }
-        .disposed(by: disposeBag)
         
         nextButton.rx.tap.bind(with: self) { owner, _ in
             owner.navigationController?.pushViewController(PhoneViewController(), animated: true)
