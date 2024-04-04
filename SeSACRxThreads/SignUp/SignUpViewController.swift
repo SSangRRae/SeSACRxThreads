@@ -32,18 +32,21 @@ class SignUpViewController: UIViewController {
     }
     
     func bind() {
-        viewModel.validation.bind(to: nextButton.rx.isEnabled).disposed(by: disposeBag)
-        viewModel.validationText.bind(to: descriptionLabel.rx.text).disposed(by: disposeBag)
+        let input = SignUpViewModel.Input(email: emailTextField.rx.text, validButtonTap: validationButton.rx.tap)
+        let output = viewModel.transform(input)
         
-        validationButton.rx.tap.bind(with: self) { owner, _ in
-            owner.viewModel.inputButtonTap.onNext(owner.emailTextField.text!)
+        output.validation.drive(nextButton.rx.isEnabled).disposed(by: disposeBag)
+        
+        output.validation.drive(with: self) { owner, state in
+            let labelColor = state ? UIColor.blue : UIColor.red
+            let buttonColor = state ? UIColor.blue : UIColor.lightGray
+            
+            owner.descriptionLabel.rx.textColor.onNext(labelColor)
+            owner.nextButton.rx.backgroundColor.onNext(buttonColor)
         }
         .disposed(by: disposeBag)
         
-        nextButton.rx.tap.bind(with: self) { owner, _ in
-            owner.navigationController?.pushViewController(PasswordViewController(), animated: true)
-        }
-        .disposed(by: disposeBag)
+        output.validationText.drive(descriptionLabel.rx.text).disposed(by: disposeBag)
     }
 
     func configure() {

@@ -9,27 +9,44 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class SignUpViewModel {
+class SignUpViewModel: ViewModelType {
     
-    private let emails = ["123@123.com", "qwer@qwer.com", "asdf@asdf.com"]
+    var disposeBag = DisposeBag()
     
-    let validation = BehaviorSubject(value: false)
-    let validationText = PublishSubject<String>()
+    struct Input {
+        let email: ControlProperty<String?>
+        let validButtonTap: ControlEvent<Void>
+    }
     
-    let inputButtonTap = PublishSubject<String>()
+    struct Output {
+        let validation: Driver<Bool>
+        let validationText: Driver<String>
+    }
     
-    let disposeBag = DisposeBag()
-    
-    init() {
-        inputButtonTap.bind(with: self) { owner, value in
-            if owner.emails.contains(value) {
-                owner.validation.onNext(false)
-                owner.validationText.onNext("사용할 수 없는 이메일입니다.")
-            } else {
-                owner.validation.onNext(true)
-                owner.validationText.onNext("사용 가능한 이메일입니다!")
-            }
+    func transform(_ input: Input) -> Output {
+        let emails = ["123@123.com", "qwer@qwer.com", "asdf@asdf.com"]
+        let validationText = PublishRelay<String>()
+        
+        let form = input.email.orEmpty.map { $0.contains("@") && $0.contains(".") }
+        
+        let duplicated = input.validButtonTap
+            .withLatestFrom(input.email.orEmpty)
+            .map { !emails.contains($0) }
+        
+        form.bind(with: self) { owner, state in
+            validationText.accept(state ? " " : "'@', '.'을 포함해주세요.")
         }
         .disposed(by: disposeBag)
+        
+        duplicated.bind(with: self) { owner, state in
+            validationText.accept(state ? "사용할 수 있는 이메일입니다." : "중복된 이메일입니다.")
+        }
+        .disposed(by: disposeBag)
+        
+        let valid = Observable.combineLatest(form, duplicated) { a, b in
+            return a && b
+        }.asDriver(onErrorJustReturn: false)
+        
+        return Output(validation: valid, validationText: validationText.asDriver(onErrorJustReturn: ""))
     }
 }
