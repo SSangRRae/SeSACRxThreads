@@ -9,22 +9,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-struct ShoppingItemList {
-    var complete: Bool = false
-    let name: String
-    var favorite: Bool = false
-    
-    init(name: String) {
-        self.name = name
-    }
-}
-
 final class ShoppingViewController: UIViewController {
     
     private let shoppingView = ShoppingView()
-    
-    var data: [ShoppingItemList] = []
-    lazy var list = PublishSubject<[ShoppingItemList]>()
+    let viewModel = ShoppingViewModel()
     
     let disposeBag = DisposeBag()
     
@@ -45,56 +33,33 @@ final class ShoppingViewController: UIViewController {
 
 extension ShoppingViewController {
     func bind() {
-        list.bind(to: shoppingView.tableView.rx.items(cellIdentifier: "cell", cellType: ShoppingTableViewCell.self)) { row, element, cell in
+        let addText = shoppingView.textField.rx.text
+        let addButtonTap = shoppingView.addButton.rx.tap
+        let tableSelected = Observable.zip(shoppingView.tableView.rx.itemSelected, shoppingView.tableView.rx.modelSelected(ShoppingItemList.self))
+        let searchBarText = shoppingView.searchBar.rx.text
+        let searchButtonClicked = shoppingView.searchBar.rx.searchButtonClicked
+        
+        let input = ShoppingViewModel.Input(addText: addText, addButtonTap: addButtonTap, tableSelected: tableSelected, searchBarText: searchBarText, searchButtonClicked: searchButtonClicked)
+        
+        viewModel.transform(input)
+        
+        viewModel.list.bind(to: shoppingView.tableView.rx.items(cellIdentifier: "cell", cellType: ShoppingTableViewCell.self)) { row, element, cell in
             
             cell.configureCell(element)
             
             cell.completeButton.rx.tap.bind(with: self) { owner, _ in
-                owner.data[row].complete.toggle()
-                owner.list.onNext(owner.data)
-            }.disposed(by: cell.disposeBag)
-            cell.favoriteButton.rx.tap.bind(with: self) { owner, _ in
-                owner.data[row].favorite.toggle()
-                owner.list.onNext(owner.data)
-            }.disposed(by: cell.disposeBag)
-        }
-        .disposed(by: disposeBag)
-        
-        shoppingView.addButton.rx.tap.bind(with: self) { owner, _ in
-            guard let text = owner.shoppingView.textField.text else { return }
+                owner.viewModel.originData[row].complete.toggle()
+                owner.viewModel.list.accept(owner.viewModel.originData)
+            }
+            .disposed(by: cell.disposeBag)
             
-            owner.data.append(ShoppingItemList(name: text))
-            owner.list.onNext(owner.data)
+            cell.favoriteButton.rx.tap.bind(with: self) { owner, _ in
+                owner.viewModel.originData[row].favorite.toggle()
+                owner.viewModel.list.accept(owner.viewModel.originData)
+            }
+            .disposed(by: cell.disposeBag)
         }
         .disposed(by: disposeBag)
-        
-        Observable.zip(shoppingView.tableView.rx.itemSelected, shoppingView.tableView.rx.modelSelected(ShoppingItemList.self))
-            .bind(with: self) { owner, value in
-                owner.data.remove(at: value.0.row)
-                owner.list.onNext(owner.data)
-            }
-            .disposed(by: disposeBag)
-        
-        shoppingView.searchBar
-            .rx
-            .text
-            .orEmpty
-            .distinctUntilChanged()
-            .bind(with: self) { owner, text in
-            let result = text.isEmpty ? owner.data : owner.data.filter { $0.name.contains(text) }
-            owner.list.onNext(result)
-        }.disposed(by: disposeBag)
-        
-        shoppingView.searchBar
-            .rx
-            .searchButtonClicked
-            .withLatestFrom(shoppingView.searchBar.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .bind(with: self) { owner, text in
-                let result = text.isEmpty ? owner.data : owner.data.filter { $0.name.contains(text) }
-                owner.list.onNext(result)
-            }
-            .disposed(by: disposeBag)
     }
 }
 

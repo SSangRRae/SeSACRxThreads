@@ -38,6 +38,7 @@
 		EC6F8B102BBD78D200B173CF /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B0F2BBD78D200B173CF /* PasswordViewModel.swift */; };
 		EC6F8B2B2BBE94CA00B173CF /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B2A2BBE94CA00B173CF /* SearchViewModel.swift */; };
 		EC6F8B2D2BBE95B000B173CF /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B2C2BBE95B000B173CF /* Protocols.swift */; };
+		EC6F8B2F2BBEA06400B173CF /* ShoppingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F8B2E2BBEA06400B173CF /* ShoppingViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		EC6F8B0F2BBD78D200B173CF /* PasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
 		EC6F8B2A2BBE94CA00B173CF /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		EC6F8B2C2BBE95B000B173CF /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		EC6F8B2E2BBEA06400B173CF /* ShoppingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +244,7 @@
 				EC6F8AFE2BBABCF700B173CF /* ShoppingView.swift */,
 				EC6F8AFF2BBABCF700B173CF /* ShoppingViewController.swift */,
 				EC6F8B032BBABE6A00B173CF /* ShoppingTableViewCell.swift */,
+				EC6F8B2E2BBEA06400B173CF /* ShoppingViewModel.swift */,
 			);
 			path = Shopping;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 				041280712AEFAD3D00972552 /* PhoneViewController.swift in Sources */,
 				EC6F8AF82BBAA27900B173CF /* SearchTableViewCell.swift in Sources */,
 				041280262AEF9BAB00972552 /* SceneDelegate.swift in Sources */,
+				EC6F8B2F2BBEA06400B173CF /* ShoppingViewModel.swift in Sources */,
 				041280582AEFA05300972552 /* SignInViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
