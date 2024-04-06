@@ -27,7 +27,7 @@ class SignUpViewModel: ViewModelType {
         let emails = ["123@123.com", "qwer@qwer.com", "asdf@asdf.com"]
         let validationText = PublishRelay<String>()
         
-        let form = input.email.orEmpty.map { $0.contains("@") && $0.contains(".") }
+        let form = input.email.orEmpty.map { $0.count > 0 && $0.contains("@") && $0.contains(".") }
         
         let duplicated = input.validButtonTap
             .withLatestFrom(input.email.orEmpty)

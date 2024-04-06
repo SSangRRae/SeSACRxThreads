@@ -47,6 +47,11 @@ class SignUpViewController: UIViewController {
         .disposed(by: disposeBag)
         
         output.validationText.drive(descriptionLabel.rx.text).disposed(by: disposeBag)
+        
+        nextButton.rx.tap.bind(with: self) { owner, _ in
+            owner.navigationController?.pushViewController(PasswordViewController(), animated: true)
+        }
+        .disposed(by: disposeBag)
     }
 
     func configure() {
